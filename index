@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LKPD - Caring and Sharing Project Planning</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-before: always; }
+    .no-print { display: none; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #f0f4f8;
+    color: #2d3748;
+    line-height: 1.5;
+  }
+
+  .print-btn {
+    position: fixed; top: 20px; right: 20px; z-index: 100;
+    background: #e53e3e; color: white; border: none; padding: 12px 28px;
+    border-radius: 30px; font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(229,62,62,0.4);
+    transition: all 0.3s;
+  }
+  .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229,62,62,0.5); }
+
+  .sheet {
+    width: 210mm; min-height: 297mm; margin: 20px auto; background: white;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden;
+    padding: 0;
+  }
+
+  /* ===== PAGE 1: HEADER & ACTIVITIES 1-2 ===== */
+  .header-band {
+    background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #3182ce 100%);
+    padding: 20px 28px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-band::before {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .header-band::after {
+    content: ''; position: absolute; bottom: -40px; left: 40px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .header-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    position: relative; z-index: 1;
+  }
+  .school-info { color: rgba(255,255,255,0.85); font-size: 11px; line-height: 1.4; }
+  .school-info strong { color: white; font-size: 12px; }
+  .lkpd-badge {
+    background: #f6e05e; color: #744210; font-family: 'Fredoka', sans-serif;
+    font-weight: 700; font-size: 13px; padding: 6px 18px; border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .header-title {
+    text-align: center; padding: 12px 0 4px; position: relative; z-index: 1;
+  }
+  .header-title h1 {
+    font-family: 'Fredoka', sans-serif; font-size: 26px; color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2); margin-bottom: 2px;
+  }
+  .header-title .subtitle {
+    font-family: 'Patrick Hand', cursive; font-size: 18px;
+    color: #bee3f8; letter-spacing: 1px;
+  }
+  .header-title .meeting {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    padding: 3px 16px; border-radius: 12px; font-size: 12px;
+    color: #e2e8f0; margin-top: 6px; backdrop-filter: blur(4px);
+  }
+
+  .identity-strip {
+    background: #ebf8ff; border-bottom: 2px solid #bee3f8;
+    padding: 10px 28px; display: grid;
+    grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    font-size: 12px;
+  }
+  .identity-strip label { font-weight: 700; color: #2b6cb0; }
+  .identity-strip .line {
+    border-bottom: 1px dashed #90cdf4; display: inline-block;
+    min-width: 100px; margin-left: 4px;
+  }
+
+  .content { padding: 16px 28px; }
+
+  /* Activity boxes */
+  .activity-box {
+    border-radius: 14px; margin-bottom: 16px; overflow: hidden;
+    border: 2px solid; page-break-inside: avoid;
+  }
+  .activity-header {
+    padding: 8px 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .activity-num {
+    width: 32px; height: 32px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-family: 'Fredoka';
+    font-weight: 700; font-size: 16px; color: white; flex-shrink: 0;
+  }
+  .activity-title {
+    font-family: 'Fredoka', sans-serif; font-size: 15px; font-weight: 600;
+  }
+  .activity-body { padding: 12px 16px; background: white; }
+  .activity-time {
+    font-size: 11px; padding: 2px 10px; border-radius: 10px;
+    font-weight: 600; margin-left: auto; white-space: nowrap;
+  }
+
+  /* Color themes */
+  .act-green { border-color: #38a169; }
+  .act-green .activity-header { background: #f0fff4; }
+  .act-green .activity-num { background: #38a169; }
+  .act-green .activity-title { color: #276749; }
+  .act-green .activity-time { background: #c6f6d5; color: #276749; }
+
+  .act-blue { border-color: #3182ce; }
+  .act-blue .activity-header { background: #ebf8ff; }
+  .act-blue .activity-num { background: #3182ce; }
+  .act-blue .activity-title { color: #2a4365; }
+  .act-blue .activity-time { background: #bee3f8; color: #2a4365; }
+
+  .act-orange { border-color: #dd6b20; }
+  .act-orange .activity-header { background: #fffaf0; }
+  .act-orange .activity-num { background: #dd6b20; }
+  .act-orange .activity-title { color: #7b341e; }
+  .act-orange .activity-time { background: #feebc8; color: #7b341e; }
+
+  .act-purple { border-color: #805ad5; }
+  .act-purple .activity-header { background: #faf5ff; }
+  .act-purple .activity-num { background: #805ad5; }
+  .act-purple .activity-title { color: #44337a; }
+  .act-purple .activity-time { background: #e9d8fd; color: #44337a; }
+
+  .act-pink { border-color: #d53f8c; }
+  .act-pink .activity-header { background: #fff5f7; }
+  .act-pink .activity-num { background: #d53f8c; }
+  .act-pink .activity-title { color: #702459; }
+  .act-pink .activity-time { background: #fed7e2; color: #702459; }
+
+  /* Role cards */
+  .role-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0;
+  }
+  .role-card {
+    border: 2px dashed #cbd5e0; border-radius: 10px; padding: 10px 12px;
+    text-align: center; background: #f7fafc; transition: all 0.3s;
+  }
+  .role-card:hover { border-color: #3182ce; background: #ebf8ff; }
+  .role-icon { font-size: 28px; margin-bottom: 4px; }
+  .role-name {
+    font-family: 'Fredoka'; font-weight: 600; font-size: 13px; color: #2d3748;
+  }
+  .role-desc { font-size: 10.5px; color: #718096; margin-top: 2px; }
+  .role-write {
+    border-top: 1px dashed #e2e8f0; margin-top: 6px; padding-top: 6px;
+    font-size: 11px; color: #a0aec0;
+  }
+  .role-write .line-short {
+    display: block; border-bottom: 1px dashed #cbd5e0;
+    width: 80%; margin: 2px auto 0;
+    min-height: 16px;
+  }
+
+  /* Topic choice */
+  .topic-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0;
+  }
+  .topic-card {
+    border: 2px solid #e2e8f0; border-radius: 12px; padding: 10px;
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+    transition: all 0.3s; position: relative;
+  }
+  .topic-card:hover { border-color: #3182ce; box-shadow: 0 2px 8px rgba(49,130,206,0.15); }
+  .topic-icon { font-size: 30px; flex-shrink: 0; }
+  .topic-label { font-family: 'Fredoka'; font-weight: 600; font-size: 13px; }
+  .topic-sub { font-size: 10.5px; color: #718096; }
+  .topic-check {
+    position: absolute; top: 8px; right: 8px; width: 20px; height: 20px;
+    border: 2px solid #cbd5e0; border-radius: 50%;
+  }
+
+  /* Writing lines */
+  .write-area {
+    margin: 8px 0;
+  }
+  .write-line {
+    border-bottom: 1px dashed #cbd5e0; min-height: 28px; margin-bottom: 2px;
+    position: relative;
+  }
+  .write-line.labeled::before {
+    content: attr(data-label); position: absolute; left: 0; top: 2px;
+    font-size: 10px; color: #a0aec0; font-style: italic;
+  }
+
+  .instruction {
+    font-size: 12px; color: #4a5568; margin-bottom: 8px; line-height: 1.5;
+  }
+  .instruction strong { color: #2d3748; }
+
+  .tip-box {
+    background: #fffff0; border: 1px solid #f6e05e; border-left: 4px solid #ecc94b;
+    border-radius: 8px; padding: 8px 12px; margin: 10px 0;
+    font-size: 11.5px; color: #744210;
+  }
+  .tip-box .tip-label {
+    font-family: 'Fredoka'; font-weight: 600; color: #975a16; margin-right: 4px;
+  }
+
+  /* Vocab bank */
+  .vocab-bank {
+    background: linear-gradient(135deg, #ebf8ff, #e9d8fd);
+    border-radius: 12px; padding: 12px 14px; margin: 10px 0;
+  }
+  .vocab-bank h4 {
+    font-family: 'Fredoka'; font-size: 13px; color: #2a4365; margin-bottom: 6px;
+  }
+  .vocab-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .vocab-tag {
+    background: white; border-radius: 15px; padding: 3px 10px;
+    font-size: 11px; font-weight: 600; color: #2b6cb0;
+    border: 1px solid #bee3f8; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  /* Planning table */
+  .plan-table {
+    width: 100%; border-collapse: collapse; margin: 8px 0;
+    font-size: 12px;
+  }
+  .plan-table th {
+    background: #2b6cb0; color: white; padding: 6px 10px;
+    font-family: 'Fredoka'; font-weight: 600; font-size: 12px;
+    text-align: left;
+  }
+  .plan-table th:first-child { border-radius: 8px 0 0 0; }
+  .plan-table th:last-child { border-radius: 0 8px 0 0; }
+  .plan-table td {
+    border: 1px solid #e2e8f0; padding: 8px 10px;
+    vertical-align: top;
+  }
+  .plan-table tr:nth-child(even) td { background: #f7fafc; }
+
+  /* Sentence builder */
+  .sentence-builder {
+    background: #f0fff4; border: 2px solid #9ae6b4; border-radius: 12px;
+    padding: 12px 14px; margin: 10px 0;
+  }
+  .sentence-builder h4 {
+    font-family: 'Fredoka'; font-size: 13px; color: #276749; margin-bottom: 8px;
+  }
+  .sentence-example {
+    background: white; border-radius: 8px; padding: 6px 12px; margin: 4px 0;
+    font-family: 'Patrick Hand', cursive; font-size: 14px;
+    border-left: 3px solid #48bb78; color: #2d3748;
+  }
+
+  /* Checklist */
+  .checklist { margin: 8px 0; }
+  .check-item {
+    display: flex; align-items: center; gap: 8px; padding: 4px 0;
+    font-size: 12px;
+  }
+  .check-box {
+    width: 16px; height: 16px; border: 2px solid #cbd5e0; border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  .sheet-footer {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: #1a365d; color: rgba(255,255,255,0.7);
+    padding: 6px 28px; font-size: 10px;
+    display: flex; justify-content: space-between;
+  }
+
+  /* Poster sketch area */
+  .sketch-area {
+    border: 2px dashed #a0aec0; border-radius: 12px;
+    min-height: 200px; margin: 8px 0; position: relative;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 27px, #f0f4f8 27px, #f0f4f8 28px
+    );
+  }
+  .sketch-label {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    color: #cbd5e0; font-family: 'Patrick Hand'; font-size: 18px;
+    text-align: center; pointer-events: none;
+  }
+
+  /* Group agreement */
+  .agreement-box {
+    background: linear-gradient(135deg, #fff5f7, #fed7e2);
+    border: 2px solid #fbb6ce; border-radius: 14px;
+    padding: 14px 16px; margin: 10px 0;
+  }
+  .agreement-box h4 {
+    font-family: 'Fredoka'; color: #97266d; font-size: 14px; margin-bottom: 8px;
+    text-align: center;
+  }
+  .sign-area {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;
+  }
+  .sign-box {
+    border: 1px dashed #fbb6ce; border-radius: 8px; padding: 8px;
+    text-align: center; background: rgba(255,255,255,0.6);
+    min-height: 50px;
+  }
+  .sign-box .sign-label { font-size: 10px; color: #b83280; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Print LKPD</button>
+
+<!-- ==================== PAGE 1 ==================== -->
+<div class="sheet">
+  <div class="header-band">
+    <div class="header-top">
+      <div class="school-info">
+        <strong>SMK Negeri 1 Maluku Tengah</strong><br>
+        Kelas X - Akuntansi dan Keuangan Lembaga<br>
+        Kokurikuler: Peduli dan Berbagi
+      </div>
+      <div class="lkpd-badge">📋 LKPD</div>
+    </div>
+    <div class="header-title">
+      <h1>✨ Caring and Sharing ✨</h1>
+      <div class="subtitle">Group Formation & Project Planning</div>
+      <div class="meeting">📅 Pertemuan 3 &nbsp;|&nbsp; ⏱️ 3 JP</div>
+    </div>
+  </div>
+
+  <div class="identity-strip">
+    <div><label>Nama:</label> <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+    <div><label>Kelas:</label> <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+    <div><label>Tanggal:</label> <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+  </div>
+
+  <div class="content">
+
+    <!-- ACTIVITY 1: Group Formation -->
+    <div class="activity-box act-green">
+      <div class="activity-header">
+        <div class="activity-num">1</div>
+        <div class="activity-title">👥 Form Your Group & Choose Your Role!</div>
+        <div class="activity-time">⏱ 20 min</div>
+      </div>
+      <div class="activity-body">
+        <p class="instruction">Bentuk kelompok 4-5 orang. Setiap anggota memilih <strong>satu peran</strong> di bawah ini. Tulis nama anggota pada masing-masing peran.</p>
+
+        <div class="role-grid">
+          <div class="role-card">
+            <div class="role-icon">👑</div>
+            <div class="role-name">LEADER</div>
+            <div class="role-desc">Memimpin diskusi & koordinasi kelompok</div>
+            <div class="role-write">Nama: <span class="line-short"></span></div>
+          </div>
+          <div class="role-card">
+            <div class="role-icon">✍️</div>
+            <div class="role-name">WRITER</div>
+            <div class="role-desc">Menulis kalimat Bahasa Inggris di poster</div>
+            <div class="role-write">Nama: <span class="line-short"></span></div>
+          </div>
+          <div class="role-card">
+            <div class="role-icon">🎨</div>
+            <div class="role-name">DESIGNER</div>
+            <div class="role-desc">Mendesain gambar & tata letak poster</div>
+            <div class="role-write">Nama: <span class="line-short"></span></div>
+          </div>
+          <div class="role-card">
+            <div class="role-icon">🎤</div>
+            <div class="role-name">PRESENTER</div>
+            <div class="role-desc">Mempresentasikan poster di depan kelas</div>
+            <div class="role-write">Nama: <span class="line-short"></span></div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-label">💡 Tip:</span> Jika kelompok 5 orang, satu anggota bisa menjadi <strong>Co-Designer</strong> atau <strong>Co-Presenter</strong>. Tulis nama tambahan: <span style="border-bottom:1px dashed #975a16; min-width:120px; display:inline-block;">&nbsp;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY 2: Choose Your Topic -->
+    <div class="activity-box act-blue">
+      <div class="activity-header">
+        <div class="activity-num">2</div>
+        <div class="activity-title">🎯 Choose Your Caring Topic!</div>
+        <div class="activity-time">⏱ 15 min</div>
+      </div>
+      <div class="activity-body">
+        <p class="instruction">Diskusikan dengan kelompok dan pilih <strong>SATU topik</strong>. Beri tanda ✓ pada lingkaran di topik pilihan kalian.</p>
+
+        <div class="topic-grid">
+          <div class="topic-card">
+            <div class="topic-icon">🤝</div>
+            <div>
+              <div class="topic-label">A. Caring for Friends</div>
+              <div class="topic-sub">Kepedulian terhadap teman</div>
+            </div>
+            <div class="topic-check"></div>
+          </div>
+          <div class="topic-card">
+            <div class="topic-icon">👨‍👩‍👧‍👦</div>
+            <div>
+              <div class="topic-label">B. Caring for Family</div>
+              <div class="topic-sub">Kepedulian terhadap keluarga</div>
+            </div>
+            <div class="topic-check"></div>
+          </div>
+          <div class="topic-card">
+            <div class="topic-icon">🏫</div>
+            <div>
+              <div class="topic-label">C. Caring for School</div>
+              <div class="topic-sub">Kepedulian terhadap lingkungan sekolah</div>
+            </div>
+            <div class="topic-check"></div>
+          </div>
+          <div class="topic-card">
+            <div class="topic-icon">🌍</div>
+            <div>
+              <div class="topic-label">D. Caring for Community</div>
+              <div class="topic-sub">Kepedulian terhadap masyarakat</div>
+            </div>
+            <div class="topic-check"></div>
+          </div>
+        </div>
+
+        <p class="instruction" style="margin-top:8px;"><strong>Why did your group choose this topic?</strong> (Tulis alasannya dalam Bahasa Inggris atau campuran)</p>
+        <div class="write-area">
+          <div class="write-line"></div>
+          <div class="write-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY 3: Vocabulary Bank -->
+    <div class="activity-box act-orange">
+      <div class="activity-header">
+        <div class="activity-num">3</div>
+        <div class="activity-title">📚 Your Vocabulary Bank</div>
+        <div class="activity-time">⏱ 20 min</div>
+      </div>
+      <div class="activity-body">
+        <p class="instruction">Gunakan kosakata di bawah ini untuk membuat kalimat pada poster kalian. <strong>Lingkari</strong> kata-kata yang ingin kalian pakai!</p>
+
+        <div class="vocab-bank">
+          <h4>🔤 Core Words - Kata Inti</h4>
+          <div class="vocab-tags">
+            <span class="vocab-tag">care (peduli)</span>
+            <span class="vocab-tag">share (berbagi)</span>
+            <span class="vocab-tag">help (membantu)</span>
+            <span class="vocab-tag">give (memberi)</span>
+            <span class="vocab-tag">donate (menyumbang)</span>
+            <span class="vocab-tag">kind (baik hati)</span>
+            <span class="vocab-tag">love (cinta)</span>
+            <span class="vocab-tag">smile (senyum)</span>
+            <span class="vocab-tag">together (bersama)</span>
+            <span class="vocab-tag">happy (bahagia)</span>
+            <span class="vocab-tag">friend (teman)</span>
+            <span class="vocab-tag">family (keluarga)</span>
+            <span class="vocab-tag">school (sekolah)</span>
+            <span class="vocab-tag">community (masyarakat)</span>
+            <span class="vocab-tag">clean (bersih)</span>
+          </div>
+        </div>
+
+        <div class="sentence-builder">
+          <h4>✏️ Example Sentences - Contoh Kalimat untuk Poster</h4>
+          <div class="sentence-example">"Sharing is caring." 💛</div>
+          <div class="sentence-example">"Let's help each other."</div>
+          <div class="sentence-example">"Be kind, be happy."</div>
+          <div class="sentence-example">"A small act of kindness can change the world."</div>
+          <div class="sentence-example">"Together we can make a difference."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet-footer">
+    <span>LKPD Kokurikuler - Caring and Sharing | Pertemuan 3</span>
+    <span>Halaman 1 dari 2</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 2 ==================== -->
+<div class="sheet page-break">
+  <div class="header-band" style="padding: 14px 28px;">
+    <div class="header-top">
+      <div style="color:white; font-family:'Fredoka'; font-size:16px;">✨ Caring and Sharing - Project Planning</div>
+      <div class="lkpd-badge">📋 LKPD</div>
+    </div>
+  </div>
+
+  <div class="content" style="padding-top:20px;">
+
+    <!-- ACTIVITY 4: Project Planning -->
+    <div class="activity-box act-purple">
+      <div class="activity-header">
+        <div class="activity-num">4</div>
+        <div class="activity-title">📝 Plan Your Poster / Greeting Card!</div>
+        <div class="activity-time">⏱ 40 min</div>
+      </div>
+      <div class="activity-body">
+        <p class="instruction">Lengkapi tabel perencanaan poster/kartu ucapan kelompok kalian.</p>
+
+        <table class="plan-table">
+          <tr>
+            <th style="width:35%;">Planning Item</th>
+            <th style="width:65%;">Your Answer (Jawaban Kelompok)</th>
+          </tr>
+          <tr>
+            <td><strong>📌 Our Topic:</strong><br><span style="font-size:10px;color:#718096;">Topik yang dipilih</span></td>
+            <td style="min-height:40px;"></td>
+          </tr>
+          <tr>
+            <td><strong>💬 Main Message:</strong><br><span style="font-size:10px;color:#718096;">Pesan utama poster (dalam Bahasa Inggris)</span></td>
+            <td style="min-height:50px;"></td>
+          </tr>
+          <tr>
+            <td><strong>✍️ Sentences for Poster:</strong><br><span style="font-size:10px;color:#718096;">Tulis 3-5 kalimat Bahasa Inggris untuk poster</span></td>
+            <td style="min-height:100px;">
+              <div style="color:#a0aec0;font-size:11px;">
+                1. ___________________________________<br><br>
+                2. ___________________________________<br><br>
+                3. ___________________________________<br><br>
+                4. ___________________________________<br><br>
+                5. ___________________________________
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>🎨 Pictures / Images:</strong><br><span style="font-size:10px;color:#718096;">Gambar apa yang akan dipakai?</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>🎨 Colors:</strong><br><span style="font-size:10px;color:#718096;">Warna apa yang akan dipakai?</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>🛠️ Materials Needed:</strong><br><span style="font-size:10px;color:#718096;">Bahan yang dibutuhkan</span></td>
+            <td style="font-size:11px;color:#a0aec0;">☐ Kertas karton &nbsp; ☐ Spidol warna &nbsp; ☐ Lem &nbsp; ☐ Gunting &nbsp; ☐ Gambar print &nbsp; ☐ Lainnya: _____</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ACTIVITY 5: Quick Poster Sketch -->
+    <div class="activity-box act-pink">
+      <div class="activity-header">
+        <div class="activity-num">5</div>
+        <div class="activity-title">🖼️ Sketch Your Poster Design!</div>
+        <div class="activity-time">⏱ 25 min</div>
+      </div>
+      <div class="activity-body">
+        <p class="instruction">Buat sketsa kasar (<em>rough sketch</em>) poster/kartu ucapan kalian di kotak bawah ini. Tunjukkan posisi tulisan, gambar, dan judul.</p>
+
+        <div class="sketch-area">
+          <div class="sketch-label">
+            ✏️ Gambar sketsa poster di sini<br>
+            <span style="font-size:13px;">(Draw your poster sketch here)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group Agreement -->
+    <div class="agreement-box">
+      <h4>🤝 Our Group Agreement - Kesepakatan Kelompok</h4>
+      <p style="font-size:12px; text-align:center; color:#702459; margin-bottom:6px;">
+        "We promise to work together, help each other, and do our best!"
+      </p>
+      <div class="checklist">
+        <div class="check-item"><div class="check-box"></div> Kami akan bekerja sama dengan baik</div>
+        <div class="check-item"><div class="check-box"></div> Kami akan menyelesaikan poster tepat waktu</div>
+        <div class="check-item"><div class="check-box"></div> Kami akan menggunakan Bahasa Inggris semampu kami</div>
+        <div class="check-item"><div class="check-box"></div> Kami akan saling membantu dan tidak menyalahkan</div>
+      </div>
+      <div class="sign-area">
+        <div class="sign-box">
+          <div class="sign-label">👑 Leader's Signature</div>
+        </div>
+        <div class="sign-box">
+          <div class="sign-label">👨‍🏫 Teacher's Signature</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Teacher Feedback -->
+    <div style="background:#f7fafc; border:2px solid #e2e8f0; border-radius:12px; padding:12px 16px; margin-top:12px;">
+      <div style="font-family:'Fredoka'; font-size:14px; color:#2d3748; margin-bottom:6px;">📝 Teacher's Feedback</div>
+      <div class="write-area">
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sheet-footer">
+    <span>LKPD Kokurikuler - Caring and Sharing | Pertemuan 3</span>
+    <span>Halaman 2 dari 2</span>
+  </div>
+</div>
+
+</body>
+</html>
